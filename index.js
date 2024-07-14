@@ -1,12 +1,15 @@
 const Fastify = require('fastify');
 const FastifyWS = require('@fastify/websocket');
+const FastifyStatic = require('@fastify/static');
 const Client = require('./client');
 
-const app = Fastify({
-  logger: true,
-});
+const app = Fastify({ logger: true, });
 
 app.register(FastifyWS);
+app.register(FastifyStatic, {
+  root: './frontend', // serve files from the frontend folder
+  prefix: '/', // serve files at the root URL
+});
 
 app.get("/socket", {websocket: true}, (socket, req) => {
   let client = new Client(socket);

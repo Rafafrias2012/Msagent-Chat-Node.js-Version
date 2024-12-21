@@ -1,25 +1,28 @@
 const express = require('express');
-const http = require('http');
 const WebSocket = require('ws');
 const path = require('path');
-const Client = require('./client');
+const { Client } = require('./client.js');
+const { MSAgentChatRoom } = require('./room.js');
 
 const app = express();
-const server = http.createServer(app);
+const server = require('http').createServer(app);
 const wss = new WebSocket.Server({ server });
 
-app.use(express.static(path.join(__dirname, 'frontend')));
+let room = new MSAgentChatRoom();
 
-wss.on('connection', (ws, req) => {
-    let client = new Client(ws);
+wss.on('connection', (socket) => {
+    let client = new Client(socket, room);
+    room.addClient(client);
 });
 
-let port = process.argv[2];
-if (!port || isNaN(port = parseInt(port))) {
-    console.error("Usage: node index.js [port]");
+let port;
+if (process.argv.length < 3 || isNaN(port = parseInt(process.argv[2]))) {
+    console.error("Usage: index.js [port]");
     process.exit(1);
 }
 
-server.listen(port, '127.0.0.1', () => {
+app.use(express.static(path.join(__dirname, 'public')));
+
+server.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });

@@ -1,45 +1,55 @@
+// Enum for message types
 const MSAgentProtocolMessageType = {
-  // Client-to-server
-  Join: "join",
-  Talk: "talk",
-  // Server-to-client
-  AddUser: "adduser",
-  RemoveUser: "remuser",
-  Message: "msg"
+    Join: "join",
+    Talk: "talk",
+    Init: "init",
+    AddUser: "adduser",
+    RemoveUser: "remuser",
+    Message: "msg"
 };
 
-const MSAgentProtocolMessage = {
-  op: null
-};
+// Base protocol message
+class MSAgentProtocolMessage {
+    constructor(op) {
+        this.op = op;
+    }
+}
 
-// Client-to-server
+// Client-to-server messages
 
-const MSAgentJoinMessage = {
-  op: MSAgentProtocolMessageType.Join,
-  data: {
-    username: ""
-  }
-};
+class MSAgentJoinMessage extends MSAgentProtocolMessage {
+    constructor(username) {
+        super(MSAgentProtocolMessageType.Join);
+        this.data = { username };
+    }
+}
 
-const MSAgentTalkMessage = {
-  op: MSAgentProtocolMessageType.Talk,
-  data: {
-    msg: ""
-  }
-};
+class MSAgentTalkMessage extends MSAgentProtocolMessage {
+    constructor(msg) {
+        super(MSAgentProtocolMessageType.Talk);
+        this.data = { msg };
+    }
+}
 
-// Server-to-client
+// Server-to-client messages
 
-const MSAgentAddUserMessage = {
-  op: MSAgentProtocolMessageType.AddUser,
-  data: {
-    username: ""
-  }
-};
+class MSAgentInitMessage extends MSAgentProtocolMessage {
+    constructor(users) {
+        super(MSAgentProtocolMessageType.Init);
+        this.data = { users };
+    }
+}
 
-const MSAgentRemoveUserMessage = {
-  op: MSAgentProtocolMessageType.RemoveUser,
-  data: {
-    username: ""
-  }
-};
+class MSAgentAddUserMessage extends MSAgentProtocolMessage {
+    constructor(username) {
+        super(MSAgentProtocolMessageType.AddUser);
+        this.data = { username };
+    }
+}
+
+class MSAgentRemoveUserMessage extends MSAgentProtocolMessage {
+    constructor(username) {
+        super(MSAgentProtocolMessageType.RemoveUser);
+        this.data = { username };
+    }
+}

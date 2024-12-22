@@ -19,8 +19,8 @@ class MSWindow {
     this.config = config;
     this.wnd.style.width = config.width + "px";
     this.wnd.style.height = config.height + "px";
-    let titlebar = this.wnd.querySelector("div.ms-window-titlebar");
-    let body = this.wnd.querySelector("div.ms-window-body");
+    let titlebar = this.wnd.querySelector("div.title-bar");
+    let body = this.wnd.querySelector("div.window-body");
     if (!titlebar || !body)
       throw new Error("MSWindow is missing titlebar or body element.");
     this.titlebar = titlebar;
@@ -78,6 +78,10 @@ class MSWindow {
     this.wnd.style.top = this.y + "px";
     this.wnd.style.left = this.x + "px";
   }
+}
+
+async function agentInit() {
+    await wordballoonInit();
 }
 
 
